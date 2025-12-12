@@ -14,11 +14,13 @@ import { Transaction } from './modules/transactions/transaction.entity';
 import { Wallet } from './modules/wallet/wallet.entity';
 import { DatabaseLogger } from './database/database-logger.service';
 import { ApiKey } from './modules/keys/api-key.entity';
+import appConfig from './config/app.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      load: [appConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],

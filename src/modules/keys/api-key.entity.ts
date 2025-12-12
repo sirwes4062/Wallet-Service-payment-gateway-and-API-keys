@@ -4,29 +4,39 @@ import {
   Column,
   ManyToOne,
   CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { User } from '../users/user.entity';
 
 @Entity()
 export class ApiKey {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
-  key: string; // hashed api key (never store raw key)
+  name: string;
 
-  @Column('simple-array', { nullable: true })
-  permissions: string[]; // ["wallet:read", "wallet:write"]
+  @Column()
+  keyHash: string;
 
-  @Column({ nullable: true })
+  @Column('simple-array')
+  permissions: string[];
+
+  @Column({ type: 'timestamp' })
   expiresAt: Date;
 
-  @Column({ default: false })
-  revoked: boolean;
+  @Column({ default: true })
+  isActive: boolean;
+
+  @Column()
+  userId: string;
 
   @ManyToOne(() => User, (user) => user.apiKeys, { onDelete: 'CASCADE' })
   user: User;
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

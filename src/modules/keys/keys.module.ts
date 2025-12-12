@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApiKey } from '../keys/api-key.entity';
-import { KeysService } from './keys.service';
-import { KeysController } from './keys.controller';
+import { ApiKeyService } from './keys.service';
+import { ApiKeyController } from './keys.controller';
+import { UsersModule } from '../users/users.module';
+import { User } from '../users/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ApiKey])],
-  providers: [KeysService],
-  controllers: [KeysController],
-  exports: [KeysService], // Needed for middleware
+  imports: [TypeOrmModule.forFeature([ApiKey, User]), UsersModule],
+  providers: [ApiKeyService],
+  controllers: [ApiKeyController],
+  exports: [ApiKeyService, TypeOrmModule], // Needed for middleware
 })
 export class KeysModule {}
